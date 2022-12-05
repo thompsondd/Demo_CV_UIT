@@ -2,19 +2,6 @@ import streamlit as st
 from PIL import Image
 import backend as democv
 
-#1. Markdown
-st.markdown("""
-# Hệ thống AI dự báo
-""")
-#data = st.file_uploader("Tải file dữ liệu về lương để AI dự đoán",key="data")
-setting={}
-class count_section:
-    def __init__(self):
-        self.number = 0
-    def __call__(self):
-        self.number+=1
-        return self.number
-
 tab1, tab2 = st.tabs(["Test","Demo"])
 with tab1:
     image_ip = st.file_uploader("Tải ảnh cần dự đoán loại nấm",key="data")
