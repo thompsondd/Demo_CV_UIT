@@ -1,11 +1,6 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import backend as ml
-import sklearn.datasets as datasets
-import math
 from PIL import Image
+import backend as democv
 
 #1. Markdown
 st.markdown("""
@@ -19,33 +14,46 @@ class count_section:
     def __call__(self):
         self.number+=1
         return self.number
-image_ip = st.file_uploader("Tải ảnh cần dự đoán loại nấm",key="data")
-if image_ip!=None:
-    get_num_section = count_section()
 
-    # Select input feature
-    
-    
-    image = Image.open(image_ip)
-    st.image(image)
-    if st.button("Run",key="run"):
-        pass
-        '''
-        if n_selected_features==0:
-            st.error("Please select at lease a feature")
-        elif (setting["F1"] or setting["LogLoss"])==False:
-            st.error("Please select a metric for evaluation")
-        else:
-            feature_selected = [ i for i in get_feature_inputs.keys() if get_feature_inputs[i]]
-            if len(feature_selected)<1:
-                st.error("Please select at least a feature")
-            else:
-                setting.update({"feature_list":feature_selected,"target":target})
-                model = ml.Model_AI(dataset, setting)
-                model.fit()
+tab1, tab2 = st.tabs(["Test","Demo"])
+with tab1:
+    image_ip = st.file_uploader("Tải ảnh cần dự đoán loại nấm",key="data")
+    if image_ip!=None:
+        with open(f"./data/data_upload/image.jpg","wb+") as f:
+            f.write(image_ip.getvalue())
+        col1, col2 = st.columns(2)
+        with col1: 
+            image = Image.open("./data/data_upload/image.jpg")
+            st.image(image)
+        with col2: 
+            st.dataframe(democv.predict("./data/data_upload/image.jpg",""))
+with tab2:
+    img1 = "./data/2237851965-148423.JPG"
+    label1 = "Lecanoromycetes"
 
-                stats = model.get_value_metrics
-                for i in stats.keys():
-                    st.write(f"{i} : {stats[i]}")
-                st.pyplot(model.plot_history())
-    '''
+    img2 = "./data/2237853216-222932.jpg"
+    label2 = "Pezizomycetes"
+
+    img3 = "./data/2238154046-230379.jpg"
+    label3 = "Exobasidiomycetes"
+
+    img4 = "./data/hoa.jpg"
+    label4 = "Unknown"
+
+    tab1_1, tab1_2, tab1_3, tab1_4 = st.tabs([label1,label2,label3,label4])
+    with tab1_1:
+        col1, col2 = st.columns(2)
+        with col1: st.image(Image.open(img1),caption=label1)
+        with col2: st.dataframe(democv.predict(img1,label1))
+    with tab1_2:
+        col1, col2 = st.columns(2)
+        with col1: st.image(Image.open(img2),caption=label2)
+        with col2: st.dataframe(democv.predict(img2,label2))
+    with tab1_3:
+        col1, col2 = st.columns(2)
+        with col1: st.image(Image.open(img3),caption=label3)
+        with col2: st.dataframe(democv.predict(img3,label3))
+    with tab1_4:
+        col1, col2 = st.columns(2)
+        with col1: st.image(Image.open(img4),caption=label4)
+        with col2: st.dataframe(democv.predict(img4,label4))
