@@ -22,8 +22,7 @@ Softmax_vgg16_path = "vgg16_softmax.sav"
 SVM_vgg19_path = "vgg19_LinearSVM_l2_hinge.sav"
 Softmax_vgg19_path = "vgg19_softmax.sav"
 
-encoder_hog = "encoder_HOG.pkl"
-encoder_hist = "encoder_hist.pkl"
+encoder_ = "encoder.pkl"
 
 def calHist(img):
     hist = cv.calcHist([img],[0],None, [256],[0,256])
@@ -80,8 +79,7 @@ Softmax_vgg16 = joblib.load(open(get_model_path(Softmax_vgg16_path), 'rb'))
 SVM_vgg19 = joblib.load(open(get_model_path(SVM_vgg19_path), 'rb'))
 Softmax_vgg19 = joblib.load(open(get_model_path(Softmax_vgg19_path), 'rb'))
 
-encoderHOG = joblib.load(open(get_model_path(encoder_hog), 'rb'))
-encoderHist = joblib.load(open(get_model_path(encoder_hist), 'rb'))
+encoder = joblib.load(open(get_model_path(encoder_), 'rb'))
 
 
 
@@ -90,34 +88,34 @@ def predict(image_path, true_label):
     feature = extract_feature(image_path,calHOG,0)
     
     y_hat_svm_hog = SVM_hog.predict([feature.reshape(-1)])
-    y_hat_svm_hog = encoderHOG.classes_[y_hat_svm_hog]
+    y_hat_svm_hog = encoder.classes_[y_hat_svm_hog]
         
     y_hat_softmax_hog = Softmax_hog.predict([feature.reshape(-1)])
-    y_hat_softmax_hog = encoderHOG.classes_[y_hat_softmax_hog]
+    y_hat_softmax_hog = encoder.classes_[y_hat_softmax_hog]
     #------------------------------------------------------------------
     feature = extract_feature(image_path,calHist,0)
     
     y_hat_svm_hist = SVM_hist.predict([feature.reshape(-1)])
-    y_hat_svm_hist = encoderHist.classes_[y_hat_svm_hist]
+    y_hat_svm_hist = encoder.classes_[y_hat_svm_hist]
         
     y_hat_softmax_hist = Softmax_hist.predict([feature.reshape(-1)])
-    y_hat_softmax_hist = encoderHist.classes_[y_hat_softmax_hist]
+    y_hat_softmax_hist = encoder.classes_[y_hat_softmax_hist]
     #----------------------------------------------------------------------
     feature = extract_feature(image_path,calModel16,1)
     
     y_hat_svm_vgg16 = SVM_vgg16.predict([feature.reshape(-1)])
-    y_hat_svm_vgg16 = encoderHist.classes_[y_hat_svm_vgg16]
+    y_hat_svm_vgg16 = encoder.classes_[y_hat_svm_vgg16]
         
     y_hat_softmax_vgg16 = Softmax_vgg16.predict([feature.reshape(-1)])
-    y_hat_softmax_vgg16 = encoderHist.classes_[y_hat_softmax_vgg16]
+    y_hat_softmax_vgg16 = encoder.classes_[y_hat_softmax_vgg16]
     #--------------------------------------------------------------------
     feature = extract_feature(image_path,calModel19,1)
     
     y_hat_svm_vgg19 = SVM_vgg19.predict([feature.reshape(-1)])
-    y_hat_svm_vgg19 = encoderHist.classes_[y_hat_svm_vgg19]
+    y_hat_svm_vgg19 = encoder.classes_[y_hat_svm_vgg19]
         
     y_hat_softmax_vgg19 = Softmax_vgg19.predict([feature.reshape(-1)])
-    y_hat_softmax_vgg19 = encoderHist.classes_[y_hat_softmax_vgg19]
+    y_hat_softmax_vgg19 = encoder.classes_[y_hat_softmax_vgg19]
     #-------------------------------------------------------------------------------------
     table = {"Hist":{"Softmax Regression":y_hat_softmax_hist[0],"SVM":y_hat_svm_hist[0]},
             "HOG":{"Softmax Regression":y_hat_softmax_hog[0],"SVM":y_hat_svm_hog[0]},
