@@ -87,9 +87,6 @@ Softmax_vgg19 = joblib.load(open(get_model_path(Softmax_vgg19_path), 'rb'))
 encoder = joblib.load(open(get_model_path(encoder_), 'rb'))
 
 
-
-
-
 def predict(image_path, true_label):
     feature = extract_feature(image_path,calHOG,0)
     

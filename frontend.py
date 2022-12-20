@@ -27,10 +27,13 @@ with tab2:
     img3 = "./data/2238154046-230379.jpg"
     label3 = "Exobasidiomycetes"
 
-    img4 = "./data/hoa.jpg"
-    label4 = "Unknown"
+    img4 = "./data/Taphrinomycetes.jpg"
+    label4 = "Taphrinomycetes"
 
-    tab1_1, tab1_2, tab1_3, tab1_4 = st.tabs([label1,label2,label3,label4])
+    img5 = "./data/hoa.jpg"
+    label5 = "Unknown"
+
+    tab1_1, tab1_2, tab1_3, tab1_4, tab1_5 = st.tabs([label1,label2,label3,label4,label5])
     with tab1_1:
         col1, col2 = st.columns(2)
         with col1: 
@@ -63,3 +66,12 @@ with tab2:
         with col2: 
             if show4:
                 st.dataframe(democv.predict(img4,label4))
+
+    with tab1_5:
+        col1, col2 = st.columns(2)
+        with col1: 
+            st.image(Image.open(img5),caption=label5)
+            show5 = st.button("Predict", key="5")
+        with col2: 
+            if show5:
+                st.dataframe(democv.predict(img5,label5))
