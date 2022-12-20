@@ -88,6 +88,7 @@ encoder = joblib.load(open(get_model_path(encoder_), 'rb'))
 
 
 def predict(image_path, true_label):
+    print(f"True label:{true_label}")
     feature = extract_feature(image_path,calHOG,0)
     
     y_hat_svm_hog = SVM_hog.predict([feature.reshape(-1)])
@@ -95,6 +96,8 @@ def predict(image_path, true_label):
         
     y_hat_softmax_hog = Softmax_hog.predict([feature.reshape(-1)])
     y_hat_softmax_hog = encoder.classes_[y_hat_softmax_hog]
+
+    print(f"\tHOG\n\t\tSoftmax predict:\t{y_hat_softmax_hog}\n\t\tSVM predict:\t\t{y_hat_svm_hog}")
     #------------------------------------------------------------------
     feature = extract_feature(image_path,calHist,0)
     
@@ -103,6 +106,7 @@ def predict(image_path, true_label):
         
     y_hat_softmax_hist = Softmax_hist.predict([feature.reshape(-1)])
     y_hat_softmax_hist = encoder.classes_[y_hat_softmax_hist]
+    print(f"\tHist\n\t\tSoftmax predict:\t{y_hat_softmax_hist}\n\t\tSVM predict:\t\t{y_hat_svm_hist}")
     #----------------------------------------------------------------------
     feature = extract_feature(image_path,calModel16,1)
     
@@ -111,6 +115,7 @@ def predict(image_path, true_label):
         
     y_hat_softmax_vgg16 = Softmax_vgg16.predict([feature.reshape(-1)])
     y_hat_softmax_vgg16 = encoder.classes_[y_hat_softmax_vgg16]
+    print(f"\n\tVGG16\n\t\tSoftmax predict:\t{y_hat_softmax_vgg16}\n\t\tSVM predict:\t\t{y_hat_svm_vgg16}")
     #--------------------------------------------------------------------
     feature = extract_feature(image_path,calModel19,1)
     
@@ -119,16 +124,17 @@ def predict(image_path, true_label):
         
     y_hat_softmax_vgg19 = Softmax_vgg19.predict([feature.reshape(-1)])
     y_hat_softmax_vgg19 = encoder.classes_[y_hat_softmax_vgg19]
+    print(f"\tVGG19\n\t\tSoftmax predict:\t{y_hat_softmax_vgg19}\n\t\tSVM predict:\t\t{y_hat_svm_vgg19}")
     #-------------------------------------------------------------------------------------
     table = {"Hist":{"Softmax Regression":y_hat_softmax_hist[0],"SVM":y_hat_svm_hist[0]},
             "HOG":{"Softmax Regression":y_hat_softmax_hog[0],"SVM":y_hat_svm_hog[0]},
             "VGG16":{"Softmax Regression":y_hat_softmax_vgg16[0],"SVM":y_hat_svm_vgg16[0]},
             "VGG19":{"Softmax Regression":y_hat_softmax_vgg19[0],"SVM":y_hat_svm_vgg19[0]},
         }
-    print(f"True label:{true_label}\n\tHOG\n\t\tSoftmax predict:\t{y_hat_softmax_hog}\n\t\tSVM predict:\t\t{y_hat_svm_hog}\
-    \n\tHist\n\t\tSoftmax predict:\t{y_hat_softmax_hist}\n\t\tSVM predict:\t\t{y_hat_svm_hist}\
-    \n\tVGG16\n\t\tSoftmax predict:\t{y_hat_softmax_vgg16}\n\t\tSVM predict:\t\t{y_hat_svm_vgg16}\
-    \n\tVGG19\n\t\tSoftmax predict:\t{y_hat_softmax_vgg19}\n\t\tSVM predict:\t\t{y_hat_svm_vgg19}")
+    #print(f"True label:{true_label}\n\tHOG\n\t\tSoftmax predict:\t{y_hat_softmax_hog}\n\t\tSVM predict:\t\t{y_hat_svm_hog}\
+    #\n\tHist\n\t\tSoftmax predict:\t{y_hat_softmax_hist}\n\t\tSVM predict:\t\t{y_hat_svm_hist}\
+    #\n\tVGG16\n\t\tSoftmax predict:\t{y_hat_softmax_vgg16}\n\t\tSVM predict:\t\t{y_hat_svm_vgg16}\
+    #\n\tVGG19\n\t\tSoftmax predict:\t{y_hat_softmax_vgg19}\n\t\tSVM predict:\t\t{y_hat_svm_vgg19}")
     df = pd.DataFrame(table).T
     dff = df.style.apply(lambda x: ["background-color:lime" if i==true_label else "background-color:" for i in x ])
     return dff
