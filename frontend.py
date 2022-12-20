@@ -30,8 +30,8 @@ with tab2:
     img4 = "./data/Taphrinomycetes.jpg"
     label4 = "Taphrinomycetes"
 
-    img5 = "./data/hoa.jpg"
-    label5 = "Unknown"
+    img5 = "./data/Agaricomycetes.jpg"
+    label5 = "Agaricomycetes"
 
     tab1_1, tab1_2, tab1_3, tab1_4, tab1_5 = st.tabs([label1,label2,label3,label4,label5])
     with tab1_1:
