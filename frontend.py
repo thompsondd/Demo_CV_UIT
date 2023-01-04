@@ -2,8 +2,8 @@ import streamlit as st
 from PIL import Image
 import backend as democv
 
-tab1, tab2 = st.tabs(["Test","Demo"])
-with tab1:
+tab1, tab2 = st.tabs(["Demo","Test"])
+with tab2:
     image_ip = st.file_uploader("Tải ảnh cần dự đoán loại nấm",key="data")
     true_label = st.text_input("True label of image")
     if image_ip!=None:
@@ -17,7 +17,7 @@ with tab1:
                 st.image(image)
             with col2: 
                 st.dataframe(democv.predict("./data/data_upload/image.jpg",true_label))
-with tab2:
+with tab1:
     img1 = "./data/2237851965-148423.JPG"
     label1 = "Lecanoromycetes"
 
